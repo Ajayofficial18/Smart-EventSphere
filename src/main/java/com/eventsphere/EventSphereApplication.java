@@ -10,5 +10,4 @@ public class EventSphereApplication {
 		SpringApplication.run(EventSphereApplication.class, args);
 		System.out.println("============ application Started : Smart EventSphere ============");
 	}
-
 }
