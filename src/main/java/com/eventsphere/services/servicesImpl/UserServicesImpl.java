@@ -46,11 +46,12 @@ public class UserServicesImpl implements UserServices {
     }
 
     @Override
-    public void updateUser(User user) {
+    public User updateUser(User user) {
         User existingUser = getUserById(user.getId());
         existingUser.setFullName(user.getFullName());
         existingUser.setPhone(user.getPhone());
         userRepository.save(existingUser);
+        return existingUser;
     }
 
     @Override

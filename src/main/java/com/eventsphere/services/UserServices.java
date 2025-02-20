@@ -10,6 +10,6 @@ public interface UserServices {
     User authenticateUser(String email, String password);
     User getUserById(Long id);
     List<User> getUsersByRole(Role role);
-    void updateUser(User user);
+    User updateUser(User user);
     void deleteUser(Long id);
 }

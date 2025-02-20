@@ -24,7 +24,7 @@ public class Application {
 
     private Status status;
 
-//    private JSONPObject jsonpObject;
+    private JSONPObject jsonpObject;
 
     private LocalDateTime timeStamp;
 
