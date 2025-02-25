@@ -2,37 +2,42 @@ package com.eventsphere.controller;
 
 
 import com.eventsphere.entity.User;
-import com.eventsphere.service.UserServices;
-import org.springframework.beans.factory.annotation.Autowired;
+import com.eventsphere.services.UserServices;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
-import java.util.List;
 
 @RestController
-@RequestMapping("/api/auth")
+@RequestMapping("/user")
+@CrossOrigin(origins = "*")
 public class UserController {
 
-    @Autowired
-    private UserServices userServices;
+    private final UserServices userService;
 
-    @PostMapping("/signup")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        User savedUser = userServices.registerUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(savedUser);
+    public UserController(UserServices userService) {
+        this.userService = userService;
     }
 
-//    @PostMapping("/login")
-//    public ResponseEntity<String> loginUser(@RequestBody LoginRequest loginRequest) {
-//        // Authentication logic will be implemented here
-//        return ResponseEntity.ok("Login successful");
-//    }
+    // 1. Register User
+    @PostMapping("/register")
+    public ResponseEntity<User> registerUser(@RequestBody User user) {
+        User newUser = userService.registerUser(user);
+        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+    }
 
-    @GetMapping("/users")
-    public ResponseEntity<List<User>> getAllUsers() {
-        List<User> users = userServices.getAllUsers();
-        return ResponseEntity.ok(users);
+    // 2. Get User by ID
+    @GetMapping("/getUser/{id}")
+    public ResponseEntity<User> getUserById(@PathVariable Long id) {
+        User user = userService.getUserById(id);
+        return ResponseEntity.ok(user);
+    }
+
+    // 3. Update User Profile
+    @PutMapping("/updateUser/{id}")
+    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+        User user = userService.updateUser(updatedUser);
+        return ResponseEntity.ok(user);
     }
 }
 
