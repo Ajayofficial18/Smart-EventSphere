@@ -62,6 +62,13 @@ public class User {
         this.updatedAt = updatedAt;
     }
 
+    public User(String email, String password, String fullName, Role role){
+        this.email = email;
+        this.password = password;
+        this.fullName = fullName;
+        this.role = role;
+    }
+
     public Long getId() {
         return id;
     }

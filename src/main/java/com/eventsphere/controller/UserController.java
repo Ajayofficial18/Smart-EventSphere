@@ -1,6 +1,7 @@
 package com.eventsphere.controller;
 
 
+import com.eventsphere.dto.SignUpUserDto;
 import com.eventsphere.entity.User;
 import com.eventsphere.services.UserServices;
 import org.springframework.http.HttpStatus;
@@ -21,9 +22,9 @@ public class UserController {
 
     // 1. Register User
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody User user) {
-        User newUser = userService.registerUser(user);
-        return ResponseEntity.status(HttpStatus.CREATED).body(newUser);
+    public ResponseEntity<User> registerUser(@RequestBody SignUpUserDto newUser) {
+        User user = userService.registerUser(newUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(user);
     }
 
     // 2. Get User by ID

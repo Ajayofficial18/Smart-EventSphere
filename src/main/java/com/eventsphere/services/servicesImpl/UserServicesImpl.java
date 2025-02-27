@@ -1,5 +1,6 @@
 package com.eventsphere.services.servicesImpl;
 
+import com.eventsphere.dto.SignUpUserDto;
 import com.eventsphere.entity.User;
 import com.eventsphere.enums.Role;
 import com.eventsphere.repository.UserRepository;
@@ -20,14 +21,17 @@ public class UserServicesImpl implements UserServices {
 //    private PasswordEncoder passwordEncoder;
 
     @Override
-    public User registerUser(User newUser) {
+    public User registerUser(SignUpUserDto newUser) {
 
-        //User excitingUser = userRepository.findByEmail(newUser.getEmail());
+//        User excitingUser = userRepository.findByEmail(newUser.getEmail()).get();
+
         if (userRepository.findByEmail(newUser.getEmail()).isPresent()) {
             throw new RuntimeException("Email is already in use.");
         }
-        //user.setPassword(passwordEncoder.encode(user.getPassword()));
-        return userRepository.save(newUser);
+        //newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
+        User user = userRepository.save(new User(newUser.getEmail(),newUser.getPassword(),newUser.getName(),newUser.getRole()));
+
+        return userRepository.save(user);
 
     }
 
