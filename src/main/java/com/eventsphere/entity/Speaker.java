@@ -6,7 +6,7 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "event_speakers")
-public class EventSpeaker {
+public class Speaker {
 
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
@@ -21,10 +21,10 @@ public class EventSpeaker {
     @JoinColumn(name = "user_id", nullable = false)
     private User speaker;
 
-    public EventSpeaker() {
+    public Speaker() {
     }
 
-    public EventSpeaker(Long id, Event event, User speaker) {
+    public Speaker(Long id, Event event, User speaker) {
         this.id = id;
         this.event = event;
         this.speaker = speaker;

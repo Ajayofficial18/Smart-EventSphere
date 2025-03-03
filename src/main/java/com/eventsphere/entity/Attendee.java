@@ -6,10 +6,10 @@ import jakarta.persistence.*;
 
 @Entity
 @Table(name = "event_attendees")
-public class EventAttendee {
+public class Attendee {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
 
     @ManyToOne
@@ -21,10 +21,10 @@ public class EventAttendee {
     @JoinColumn(name = "user_id", nullable = false)
     private User attendee;
 
-    public EventAttendee() {
+    public Attendee() {
     }
 
-    public EventAttendee(Long id, Event event, User attendee) {
+    public Attendee(Long id, Event event, User attendee) {
         this.id = id;
         this.event = event;
         this.attendee = attendee;
