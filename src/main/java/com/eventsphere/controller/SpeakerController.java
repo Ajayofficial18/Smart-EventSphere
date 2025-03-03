@@ -2,7 +2,7 @@ package com.eventsphere.controller;
 
 
 import com.eventsphere.entity.User;
-import com.eventsphere.services.EventSpeakerService;
+import com.eventsphere.services.SpeakerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ import java.util.List;
 public class SpeakerController {
 
     @Autowired
-    private EventSpeakerService speakerService;
+    private SpeakerService speakerService;
 
     // Register a Speaker for an Event
     @PostMapping("/register/{eventId}/{userId}")

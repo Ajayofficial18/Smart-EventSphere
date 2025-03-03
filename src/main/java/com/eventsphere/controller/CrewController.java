@@ -2,7 +2,7 @@ package com.eventsphere.controller;
 
 
 import com.eventsphere.entity.User;
-import com.eventsphere.services.EventCrewService;
+import com.eventsphere.services.CrewService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
@@ -15,7 +15,7 @@ import java.util.List;
 public class CrewController {
 
     @Autowired
-    private EventCrewService crewService;
+    private CrewService crewService;
 
     // Register a Crew Member for an Event
     @PostMapping("/register/{eventId}/{userId}")
