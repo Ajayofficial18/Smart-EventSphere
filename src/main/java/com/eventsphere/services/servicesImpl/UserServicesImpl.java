@@ -1,10 +1,12 @@
 package com.eventsphere.services.servicesImpl;
 
 import com.eventsphere.dto.SignUpUserDto;
+import com.eventsphere.entity.Event;
 import com.eventsphere.entity.User;
 import com.eventsphere.enums.Role;
-import com.eventsphere.repository.UserRepository;
+import com.eventsphere.repository.*;
 import com.eventsphere.services.UserServices;
+import jakarta.transaction.Transactional;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,14 @@ public class UserServicesImpl implements UserServices {
 
     @Autowired
     private UserRepository userRepository;
+    @Autowired
+    private EventRepository eventRepository;
+    @Autowired
+    private EventAttendeeRepository eventAttendeeRepository;
+    @Autowired
+    private SpeakerRepository speakerRepository;
+    @Autowired
+    private EventCrewRepository eventCrewRepository;
 
 //    @Autowired
 //    private PasswordEncoder passwordEncoder;
@@ -60,9 +70,18 @@ public class UserServicesImpl implements UserServices {
         return existingUser;
     }
 
+
     @Override
+    @Transactional
     public String deleteUser(Long id) {
         if(userRepository.existsById(id)){
+            List<Event> events = eventRepository.findByCreatedById(id);
+            for(Event event : events){
+                eventAttendeeRepository.deleteByEvent(event);
+                eventCrewRepository.deleteByEvent(event);
+                speakerRepository.deleteByEvent(event);
+            }
+            eventRepository.deleteByCreatedBy(userRepository.findById(id).get());
             userRepository.deleteById(id);
             return "User deleted successfully";
         }

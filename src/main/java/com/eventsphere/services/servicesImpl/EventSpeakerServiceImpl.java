@@ -1,7 +1,7 @@
 package com.eventsphere.services.servicesImpl;
 
 import com.eventsphere.entity.Event;
-import com.eventsphere.entity.EventSpeaker;
+import com.eventsphere.entity.Speaker;
 import com.eventsphere.entity.User;
 import com.eventsphere.enums.Role;
 import com.eventsphere.repository.EventRepository;
@@ -39,7 +39,7 @@ public class EventSpeakerServiceImpl implements EventSpeakerService {
             throw new RuntimeException("User is not a speaker");
         }
 
-        EventSpeaker eventSpeaker = new EventSpeaker();
+        Speaker eventSpeaker = new Speaker();
         eventSpeaker.setEvent(event);
         eventSpeaker.setSpeaker(speaker);
         speakerRepository.save(eventSpeaker);
@@ -52,7 +52,7 @@ public class EventSpeakerServiceImpl implements EventSpeakerService {
     public List<User> getSpeakersByEvent(Long eventId) {
         return speakerRepository.findByEventId(eventId)
                 .stream()
-                .map(EventSpeaker::getSpeaker)
+                .map(Speaker::getSpeaker)
                 .collect(Collectors.toList());
     }
 }

@@ -1,7 +1,7 @@
 package com.eventsphere.services.servicesImpl;
 
 import com.eventsphere.entity.Event;
-import com.eventsphere.entity.EventAttendee;
+import com.eventsphere.entity.Attendee;
 import com.eventsphere.entity.User;
 import com.eventsphere.enums.Role;
 import com.eventsphere.repository.EventAttendeeRepository;
@@ -39,7 +39,7 @@ public class EventAttendeeServiceImpl implements EventAttendeeService {
             throw new RuntimeException("User is not an attendee");
         }
 
-        EventAttendee eventAttendee = new EventAttendee();
+        Attendee eventAttendee = new Attendee();
         eventAttendee.setEvent(event);
         eventAttendee.setAttendee(attendee);
         eventAttendeeRepository.save(eventAttendee);
@@ -51,7 +51,7 @@ public class EventAttendeeServiceImpl implements EventAttendeeService {
     public List<User> getAttendeesByEvent(Long eventId) {
         return eventAttendeeRepository.findByEventId(eventId)
                 .stream()
-                .map(EventAttendee::getAttendee)
+                .map(Attendee::getAttendee)
                 .collect(Collectors.toList());
     }
 }

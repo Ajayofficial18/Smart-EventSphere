@@ -1,7 +1,7 @@
 package com.eventsphere.services.servicesImpl;
 
 import com.eventsphere.entity.Event;
-import com.eventsphere.entity.EventCrew;
+import com.eventsphere.entity.Crew;
 import com.eventsphere.entity.User;
 import com.eventsphere.enums.Role;
 import com.eventsphere.repository.EventCrewRepository;
@@ -39,10 +39,10 @@ public class EventCrewServiceImpl implements EventCrewService {
             throw new RuntimeException("User is not a crew member");
         }
 
-        EventCrew eventCrew = new EventCrew();
-        eventCrew.setEvent(event);
-        eventCrew.setCrewMember(crewMember);
-        eventCrewRepository.save(eventCrew);
+        Crew crew = new Crew();
+        crew.setEvent(event);
+        crew.setCrewMember(crewMember);
+        eventCrewRepository.save(crew);
         return "User assigned as crew successfully!";
     }
 
@@ -50,7 +50,7 @@ public class EventCrewServiceImpl implements EventCrewService {
     public List<User> getCrewMembersByEvent(Long eventId) {
         return eventCrewRepository.findByEventId(eventId)
                 .stream()
-                .map(EventCrew::getCrewMember)
+                .map(Crew::getCrewMember)
                 .collect(Collectors.toList());
     }
 

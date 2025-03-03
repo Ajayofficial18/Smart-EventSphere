@@ -30,14 +30,14 @@ public class Event {
     @JoinColumn(name = "organizer_id", nullable = false)
     private User createdBy;  // Organizer
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EventAttendee> attendees;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Attendee> attendees;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EventCrew> crewMembers;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Crew> crewMembers;
 
-    @OneToMany(mappedBy = "event", cascade = CascadeType.ALL, orphanRemoval = true)
-    private List<EventSpeaker> speakers;
+    @OneToMany(mappedBy = "event", cascade = CascadeType.REMOVE, orphanRemoval = true)
+    private List<Speaker> speakers;
 
     @Column(nullable = false)
     private LocalDateTime updatedAt;
@@ -59,7 +59,7 @@ public class Event {
     public Event() {
     }
 
-    public Event(Long id, String eventName, String description, LocalDateTime eventDateTime, String venue, User createdBy, List<EventAttendee> attendees, List<EventCrew> crewMembers, List<EventSpeaker> speakers, LocalDateTime updatedAt, LocalDateTime createdAt) {
+    public Event(Long id, String eventName, String description, LocalDateTime eventDateTime, String venue, User createdBy, List<Attendee> attendees, List<Crew> crewMembers, List<Speaker> speakers, LocalDateTime updatedAt, LocalDateTime createdAt) {
         this.id = id;
         this.eventName = eventName;
         this.description = description;
@@ -121,27 +121,27 @@ public class Event {
         this.createdBy = createdBy;
     }
 
-    public List<EventAttendee> getAttendees() {
+    public List<Attendee> getAttendees() {
         return attendees;
     }
 
-    public void setAttendees(List<EventAttendee> attendees) {
+    public void setAttendees(List<Attendee> attendees) {
         this.attendees = attendees;
     }
 
-    public List<EventCrew> getCrewMembers() {
+    public List<Crew> getCrewMembers() {
         return crewMembers;
     }
 
-    public void setCrewMembers(List<EventCrew> crewMembers) {
+    public void setCrewMembers(List<Crew> crewMembers) {
         this.crewMembers = crewMembers;
     }
 
-    public List<EventSpeaker> getSpeakers() {
+    public List<Speaker> getSpeakers() {
         return speakers;
     }
 
-    public void setSpeakers(List<EventSpeaker> speakers) {
+    public void setSpeakers(List<Speaker> speakers) {
         this.speakers = speakers;
     }
 
