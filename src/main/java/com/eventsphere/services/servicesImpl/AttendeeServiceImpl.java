@@ -4,10 +4,10 @@ import com.eventsphere.entity.Event;
 import com.eventsphere.entity.Attendee;
 import com.eventsphere.entity.User;
 import com.eventsphere.enums.Role;
-import com.eventsphere.repository.EventAttendeeRepository;
-import com.eventsphere.repository.EventRepository;
-import com.eventsphere.repository.UserRepository;
-import com.eventsphere.services.EventAttendeeService;
+import com.eventsphere.repository.AttendeeRepo;
+import com.eventsphere.repository.EventRepo;
+import com.eventsphere.repository.UserRepo;
+import com.eventsphere.services.AttendeeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -15,24 +15,24 @@ import java.util.List;
 import java.util.stream.Collectors;
 
 @Service
-public class EventAttendeeServiceImpl implements EventAttendeeService {
+public class AttendeeServiceImpl implements AttendeeService {
 
     @Autowired
-    private EventAttendeeRepository eventAttendeeRepository;
+    private AttendeeRepo attendeeRepo;
 
     @Autowired
-    private EventRepository eventRepository;
+    private EventRepo eventRepo;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepo userRepo;
 
     @Override
     public String registerAttendee(Long eventId, Long userId) {
 
-        Event event = eventRepository.findById(eventId)
+        Event event = eventRepo.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
-        User attendee = userRepository.findById(userId)
+        User attendee = userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (attendee.getRole() != Role.ATTENDEE) {
@@ -42,14 +42,14 @@ public class EventAttendeeServiceImpl implements EventAttendeeService {
         Attendee eventAttendee = new Attendee();
         eventAttendee.setEvent(event);
         eventAttendee.setAttendee(attendee);
-        eventAttendeeRepository.save(eventAttendee);
+        attendeeRepo.save(eventAttendee);
 
         return "User registered as an attendee successfully!";
     }
 
     @Override
     public List<User> getAttendeesByEvent(Long eventId) {
-        return eventAttendeeRepository.findByEventId(eventId)
+        return attendeeRepo.findByEventId(eventId)
                 .stream()
                 .map(Attendee::getAttendee)
                 .collect(Collectors.toList());

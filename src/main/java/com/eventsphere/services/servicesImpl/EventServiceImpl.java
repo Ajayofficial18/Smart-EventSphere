@@ -3,8 +3,8 @@ package com.eventsphere.services.servicesImpl;
 import com.eventsphere.entity.Event;
 import com.eventsphere.entity.User;
 import com.eventsphere.enums.Role;
-import com.eventsphere.repository.EventRepository;
-import com.eventsphere.repository.UserRepository;
+import com.eventsphere.repository.EventRepo;
+import com.eventsphere.repository.UserRepo;
 import com.eventsphere.services.EventService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -16,14 +16,14 @@ import java.util.List;
 public class EventServiceImpl implements EventService {
 
     @Autowired
-    private EventRepository eventRepository;
+    private EventRepo eventRepo;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepo userRepo;
 
     @Override
     public Event createEvent(Event event, Long organizerId) {
-        User organizer = userRepository.findById(organizerId)
+        User organizer = userRepo.findById(organizerId)
                 .orElseThrow(() -> new RuntimeException("Organizer not found"));
 
         if (organizer.getRole() != Role.ORGANIZER) {
@@ -31,29 +31,29 @@ public class EventServiceImpl implements EventService {
         }
 
         event.setCreatedBy(organizer);
-        return eventRepository.save(event);
+        return eventRepo.save(event);
     }
 
     @Override
     public List<Event> getAllEvents() {
-        return eventRepository.findAll();
+        return eventRepo.findAll();
     }
 
     @Override
     public Event getEventById(Long eventId) {
-        return eventRepository.findById(eventId)
+        return eventRepo.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
     }
 
     @Override
     public List<Event> getEventsByOrganizer(Long organizerId) {
-        return eventRepository.findByCreatedById(organizerId);
+        return eventRepo.findByCreatedById(organizerId);
     }
 
     @Override
     public Event updateEvent(Long eventId, Event updatedEvent) {
-        System.out.println(eventRepository.findById(eventId));
-        Event existingEvent = eventRepository.findById(eventId)
+        System.out.println(eventRepo.findById(eventId));
+        Event existingEvent = eventRepo.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
         existingEvent.setEventName(updatedEvent.getEventName());
@@ -66,15 +66,15 @@ public class EventServiceImpl implements EventService {
         existingEvent.setSpeakers(updatedEvent.getSpeakers());
         existingEvent.setUpdatedAt(updatedEvent.getUpdatedAt());
 
-        return eventRepository.save(existingEvent);
+        return eventRepo.save(existingEvent);
     }
 
     @Override
     public Event deleteEvent(Long eventId) {
         //eventRepository.findById(eventId).orElseThrow(()-> new RuntimeException("event not found"));
-        if(eventRepository.existsById(eventId)){
-            Event event = eventRepository.findById(eventId).get();
-            eventRepository.deleteById(eventId);
+        if(eventRepo.existsById(eventId)){
+            Event event = eventRepo.findById(eventId).get();
+            eventRepo.deleteById(eventId);
             return event;
 
         }

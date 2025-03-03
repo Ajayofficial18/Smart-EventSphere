@@ -4,10 +4,10 @@ import com.eventsphere.entity.Event;
 import com.eventsphere.entity.Speaker;
 import com.eventsphere.entity.User;
 import com.eventsphere.enums.Role;
-import com.eventsphere.repository.EventRepository;
-import com.eventsphere.repository.SpeakerRepository;
-import com.eventsphere.repository.UserRepository;
-import com.eventsphere.services.EventSpeakerService;
+import com.eventsphere.repository.EventRepo;
+import com.eventsphere.repository.SpeakerRepo;
+import com.eventsphere.repository.UserRepo;
+import com.eventsphere.services.SpeakerService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,23 +16,23 @@ import java.util.stream.Collectors;
 
 
 @Service
-public class EventSpeakerServiceImpl implements EventSpeakerService {
+public class SpeakerServiceImpl implements SpeakerService {
 
     @Autowired
-    private SpeakerRepository speakerRepository;
+    private SpeakerRepo speakerRepo;
 
     @Autowired
-    private EventRepository eventRepository;
+    private EventRepo eventRepo;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepo userRepo;
 
     @Override
     public String assignSpeakerToEvent(Long eventId, Long userId) {
-        Event event = eventRepository.findById(eventId)
+        Event event = eventRepo.findById(eventId)
                 .orElseThrow(() -> new RuntimeException("Event not found"));
 
-        User speaker = userRepository.findById(userId)
+        User speaker = userRepo.findById(userId)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
         if (speaker.getRole() != Role.SPEAKER) {
@@ -42,7 +42,7 @@ public class EventSpeakerServiceImpl implements EventSpeakerService {
         Speaker eventSpeaker = new Speaker();
         eventSpeaker.setEvent(event);
         eventSpeaker.setSpeaker(speaker);
-        speakerRepository.save(eventSpeaker);
+        speakerRepo.save(eventSpeaker);
 
         return "User assigned as speaker successfully!";
 
@@ -50,7 +50,7 @@ public class EventSpeakerServiceImpl implements EventSpeakerService {
 
     @Override
     public List<User> getSpeakersByEvent(Long eventId) {
-        return speakerRepository.findByEventId(eventId)
+        return speakerRepo.findByEventId(eventId)
                 .stream()
                 .map(Speaker::getSpeaker)
                 .collect(Collectors.toList());

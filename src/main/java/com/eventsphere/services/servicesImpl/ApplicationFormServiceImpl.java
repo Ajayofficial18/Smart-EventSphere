@@ -1,10 +1,9 @@
 package com.eventsphere.services.servicesImpl;
 
 import com.eventsphere.entity.ApplicationForm;
-import com.eventsphere.entity.User;
 import com.eventsphere.enums.ApplicationStatus;
 import com.eventsphere.repository.ApplicationFormRepository;
-import com.eventsphere.repository.UserRepository;
+import com.eventsphere.repository.UserRepo;
 import com.eventsphere.services.ApplicationFormService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -19,7 +18,7 @@ public class ApplicationFormServiceImpl implements ApplicationFormService {
     private ApplicationFormRepository applicationFormRepository;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepo userRepo;
 
     @Override
     public String submitApplication(ApplicationForm applicationForm) {

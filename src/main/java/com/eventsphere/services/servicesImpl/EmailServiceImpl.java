@@ -1,23 +1,23 @@
 package com.eventsphere.services.servicesImpl;
 
-import com.eventsphere.repository.EmailNotificationRepository;
-import com.eventsphere.repository.UserRepository;
-import com.eventsphere.services.EmailNotificationService;
+import com.eventsphere.repository.EmailRepo;
+import com.eventsphere.repository.UserRepo;
+import com.eventsphere.services.EmailService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
 @Service
-public class EmailNotificationServiceImpl implements EmailNotificationService {
+public class EmailServiceImpl implements EmailService {
 
 //    @Autowired
 //    private JavaMailSender mailSender;
 
     @Autowired
-    private EmailNotificationRepository emailNotificationRepository;
+    private EmailRepo emailRepo;
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepo userRepo;
 
     @Override
     public void sendEmail(String recipientEmail, String subject, String body) {
