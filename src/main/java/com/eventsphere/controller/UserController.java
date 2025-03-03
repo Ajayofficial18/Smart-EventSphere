@@ -22,9 +22,9 @@ public class UserController {
 
     // 1. Register User
     @PostMapping("/register")
-    public ResponseEntity<User> registerUser(@RequestBody SignUpUserDto newUser) {
-        User user = userService.registerUser(newUser);
-        return ResponseEntity.status(HttpStatus.CREATED).body(user);
+    public ResponseEntity<String> registerUser(@RequestBody SignUpUserDto newUser) {
+        String result = userService.registerUser(newUser);
+        return ResponseEntity.status(HttpStatus.CREATED).body(result);
     }
 
     // 2. Get User by ID
@@ -35,8 +35,8 @@ public class UserController {
     }
 
     // 3. Update User Profile
-    @PutMapping("/updateUser/{id}")
-    public ResponseEntity<User> updateUser(@PathVariable Long id, @RequestBody User updatedUser) {
+    @PutMapping("/updateUser")
+    public ResponseEntity<User> updateUser(@RequestBody User updatedUser) {
         User user = userService.updateUser(updatedUser);
         return ResponseEntity.ok(user);
     }

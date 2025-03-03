@@ -17,32 +17,28 @@ import java.util.List;
 public class UserServicesImpl implements UserServices {
 
     @Autowired
-    private UserRepository userRepository;
+    private UserRepo userRepo;
     @Autowired
-    private EventRepository eventRepository;
+    private EventRepo eventRepo;
     @Autowired
-    private EventAttendeeRepository eventAttendeeRepository;
+    private AttendeeRepo attendeeRepo;
     @Autowired
-    private SpeakerRepository speakerRepository;
+    private SpeakerRepo speakerRepo;
     @Autowired
-    private EventCrewRepository eventCrewRepository;
+    private CrewRepo crewRepo;
 
 //    @Autowired
 //    private PasswordEncoder passwordEncoder;
 
     @Override
-    public User registerUser(SignUpUserDto newUser) {
-
-//        User excitingUser = userRepository.findByEmail(newUser.getEmail()).get();
-
-        if (userRepository.findByEmail(newUser.getEmail()).isPresent()) {
-            throw new RuntimeException("Email is already in use.");
+    public String registerUser(SignUpUserDto newUser) {
+        User excitingUser = userRepo.findByEmail(newUser.getEmail());
+        if (excitingUser!=null) {
+            return "User already exists with this email!";
         }
         //newUser.setPassword(passwordEncoder.encode(newUser.getPassword()));
-        User user = userRepository.save(new User(newUser.getEmail(),newUser.getPassword(),newUser.getName(),newUser.getRole()));
-
-        return userRepository.save(user);
-
+        userRepo.save(new User(newUser.getEmail(),newUser.getPassword(),newUser.getName(),newUser.getRole()));
+        return "User registered successfully!";
     }
 
     @Override
@@ -51,45 +47,50 @@ public class UserServicesImpl implements UserServices {
     }
 
     @Override
-    public User getUserById(Long id) {
-        return userRepository.findById(id)
-                .orElseThrow(() -> new RuntimeException("User not found"));
-    }
-
-    @Override
-    public List<User> getUsersByRole(Role role) {
-        return userRepository.findByRole(role);
-    }
-
-    @Override
     public User updateUser(User user) {
         User existingUser = getUserById(user.getId());
-        existingUser.setFullName(user.getFullName());
-        existingUser.setPhone(user.getPhone());
-        userRepository.save(existingUser);
-        return existingUser;
-    }
-
-
-    @Override
-    @Transactional
-    public String deleteUser(Long id) {
-        if(userRepository.existsById(id)){
-            List<Event> events = eventRepository.findByCreatedById(id);
-            for(Event event : events){
-                eventAttendeeRepository.deleteByEvent(event);
-                eventCrewRepository.deleteByEvent(event);
-                speakerRepository.deleteByEvent(event);
+        if(userRepo.findByEmail(user.getEmail()) != null){
+            if(!user.getEmail().equals(existingUser.getEmail())){
+                throw new RuntimeException("User already exists with this email!");
             }
-            eventRepository.deleteByCreatedBy(userRepository.findById(id).get());
-            userRepository.deleteById(id);
-            return "User deleted successfully";
         }
-        return "User does not exist";
+        existingUser.setFullName(user.getFullName());
+        existingUser.setEmail(user.getEmail());
+        existingUser.setPhone(user.getPhone());
+        userRepo.save(existingUser);
+        return existingUser;
     }
 
     @Override
     public List<User> getAllUser() {
-        return userRepository.findAll();
+        return userRepo.findAll();
+    }
+
+    @Override
+    public User getUserById(Long id) {
+        return userRepo.findById(id)
+                .orElseThrow(() -> new RuntimeException("User not found with id : "+id));
+    }
+
+    @Override
+    public List<User> getUsersByRole(Role role) {
+        return userRepo.findByRole(role);
+    }
+
+    @Override
+    @Transactional
+    public String deleteUser(Long id) {
+        if(userRepo.existsById(id)){
+            List<Event> events = eventRepo.findByCreatedById(id);
+            for(Event event : events){
+//                attendeeRepo.deleteByEvent(event);
+//                crewRepo.deleteByEvent(event);
+//                speakerRepo.deleteByEvent(event);
+            }
+            eventRepo.deleteByCreatedBy(getUserById(id));
+            userRepo.deleteById(id);
+            return "User deleted successfully";
+        }
+        return "User does not exist";
     }
 }

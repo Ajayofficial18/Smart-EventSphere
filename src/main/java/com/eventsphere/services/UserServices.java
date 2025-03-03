@@ -7,7 +7,7 @@ import com.eventsphere.enums.Role;
 import java.util.List;
 
 public interface UserServices {
-    User registerUser(SignUpUserDto user);
+    String registerUser(SignUpUserDto user);
     User authenticateUser(String email, String password);
     User getUserById(Long id);
     List<User> getUsersByRole(Role role);
