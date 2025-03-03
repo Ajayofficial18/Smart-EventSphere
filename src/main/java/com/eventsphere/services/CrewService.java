@@ -4,7 +4,7 @@ import com.eventsphere.entity.User;
 
 import java.util.List;
 
-public interface EventCrewService {
+public interface CrewService {
     String assignCrewToEvent(Long eventId, Long userId);
     List<User> getCrewMembersByEvent(Long eventId);
 //    String removeCrewFromEvent(Long eventId, Long userId);
